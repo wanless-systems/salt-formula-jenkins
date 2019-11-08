@@ -15,7 +15,7 @@ jenkins_repo:
     - gpgcheck: 1
     - gpgkey: file:///etc/pki/rpm-gpg/jenkins.io.gpgkey
   requires:
-    file: jenkins_repo_key
+    - file: jenkins_repo_key
 
 
 
