@@ -4,8 +4,8 @@
 
 jenkins_repo_key:
   file.managed:
-    - name: /etc/pki/rpm-gpg/jenkins.io.gpgkey
-    - source: salt://jenkins/files/jenkins.io.gpgkey
+    - name: /etc/pki/rpm-gpg/jenkins.io.key
+    - source: salt://jenkins/files/jenkins.io.key
 
 
 jenkins_repo:
@@ -13,7 +13,7 @@ jenkins_repo:
     - humanname: Jenkins - remote repo
     - baseurl: http://pkg.jenkins.io/redhat
     - gpgcheck: 1
-    - gpgkey: file:///etc/pki/rpm-gpg/jenkins.io.gpgkey
+    - gpgkey: file:///etc/pki/rpm-gpg/jenkins.io.key
     - require:
       - file: jenkins_repo_key
 
