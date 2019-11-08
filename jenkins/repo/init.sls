@@ -14,7 +14,7 @@ jenkins_repo:
     - baseurl: http://pkg.jenkins.io/redhat
     - gpgcheck: 1
     - gpgkey: file:///etc/pki/rpm-gpg/jenkins.io.gpgkey
-  requires:
+    - require:
     - file: jenkins_repo_key
 
 
