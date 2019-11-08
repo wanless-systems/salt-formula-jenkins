@@ -1,7 +1,7 @@
 
 include:
-{%- if pillar.jenkins.prerequs is defined %}
-- jenkins.prerequs
+{%- if pillar.jenkins.repo is defined %}
+- jenkins.repo
 {%- endif %}
 {%- if pillar.jenkins.master is defined %}
 - jenkins.master
