@@ -30,8 +30,9 @@ jenkins_{{ master.config }}:
 
 {%- if master.update_site_url is defined %}
 
-{{ master.home }}/hudson.model.UpdateCenter.xml:
+jenkins_UpdateCenter_config_file:
   file.managed:
+  - name: {{ master.home }}/hudson.model.UpdateCenter.xml
   - source: salt://jenkins/files/hudson.model.UpdateCenter.xml
   - template: jinja
   - user: jenkins
@@ -85,7 +86,9 @@ jenkins_master_service:
   - name: {{ master.service }}
   - watch:
     - file: jenkins_{{ master.config }}
-    - file: {{ master.home }}/hudson.model.UpdateCenter.xml
+    - file: jenkins_UpdateCenter_config_file
+  - require:
+    - file: jenkins_UpdateCenter_config_file
 
 jenkins_service_running:
   cmd.script:
