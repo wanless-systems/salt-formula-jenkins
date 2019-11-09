@@ -86,10 +86,12 @@ jenkins_master_service:
   - name: {{ master.service }}
   - watch:
     - file: jenkins_{{ master.config }}
+    {%- if master.get('no_config', False) == False %}
     {%- if master.update_site_url is defined %}
     - file: jenkins_UpdateCenter_config_file
   - require:
     - file: jenkins_UpdateCenter_config_file
+    {% endif %}
     {% endif %}
 
 jenkins_service_running:
