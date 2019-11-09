@@ -86,9 +86,11 @@ jenkins_master_service:
   - name: {{ master.service }}
   - watch:
     - file: jenkins_{{ master.config }}
+    {%- if master.update_site_url is defined %}
     - file: jenkins_UpdateCenter_config_file
   - require:
     - file: jenkins_UpdateCenter_config_file
+    {% endif %}
 
 jenkins_service_running:
   cmd.script:
