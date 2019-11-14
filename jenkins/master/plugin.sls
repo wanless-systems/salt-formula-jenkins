@@ -19,12 +19,15 @@ setup_jenkins_cli:
 install_jenkins_plugin_{{ plugin.name }}:
   cmd.run:
   - name: >
-      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} install-plugin {{ plugin.name }} ||
-      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} -http -auth admin:{{ master.user.admin.password }} install-plugin {{ plugin.name }}
-  - unless: "[ -f {{ master.home }}/plugins/{{ plugin.name }}.jpi ]"
+      java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} -http -auth admin:{{ master.user.admin.password }} install-plugin {{ plugin.name }} -deploy -restart &&
+      sleep 30
+  - unless: "[ -d {{ master.home }}/plugins/{{ plugin.name }} ]"
   - cwd: /root
   - require:
     - cmd: setup_jenkins_cli
     - cmd: jenkins_service_running
+
+# TODO: The Jenkins service *must* be restarted after plugins are installed.
+# As we're doing this stuff via the command line this is not automatically done for us.
 
 {%- endfor %}
