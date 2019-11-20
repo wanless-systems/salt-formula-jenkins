@@ -7,8 +7,12 @@
 
 setup_jenkins_cli:
   cmd.run:
+  # TODO: Remove this sleep 300 - The reason for this is that Jenkins has to
+  # download the plugin json information first before it can install plugins.
+  # So upon first installing Jenkins you'll get a problem with installing the
+  # plugins because it doesn't have the necessary information to run
   - names:
-    - wget http://localhost:{{ master.http.port }}/jnlpJars/jenkins-cli.jar
+    - wget http://localhost:{{ master.http.port }}/jnlpJars/jenkins-cli.jar && sleep 300
   - unless: "[ -f /root/jenkins-cli.jar ]"
   - cwd: /root
   - require:
