@@ -28,6 +28,8 @@
   - group: jenkins
   - require:
     - file: {{ master.home }}/users/{{ user_name }}/config.xml
+  - watch_in:
+    - service: jenkins_master_service
   - unless: test -e {{ master.home }}/users/{{ user_name }}/.config_created
 
 {%- endfor %}
