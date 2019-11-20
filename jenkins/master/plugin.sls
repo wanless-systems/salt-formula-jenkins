@@ -21,7 +21,7 @@ install_jenkins_yaml_configuration_as_code:
         - user: root
         - group: root
         - mode: 644
-        - contents_pillar: master:home:configuration_as_code_yaml
+        - contents_pillar: jenkins:master:configuration_as_code_yaml
 {%- endif %}
 
 {%- for plugin in master.plugins %}
