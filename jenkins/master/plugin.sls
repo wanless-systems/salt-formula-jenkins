@@ -30,9 +30,7 @@ install_jenkins_plugin_{{ plugin.name }}:
   - require:
     - cmd: setup_jenkins_cli
     - cmd: jenkins_service_running
-{%- if master.configuration_as_code_yaml is defined %}
-    - install_jenkins_yaml_configuration_as_code
-{%- endif %}
+
 # TODO: The Jenkins service *must* be restarted after plugins are installed.
 # As we're doing this stuff via the command line this is not automatically done for us.
 {%- endfor %}
