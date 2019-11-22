@@ -34,7 +34,7 @@ install_jenkins_plugin_{{ plugin.name }}:
   cmd.run:
   - name: >
       java -jar jenkins-cli.jar -s http://localhost:{{ master.http.port }} -http -auth admin:{{ master.user.admin.password }} install-plugin {{ plugin.name }} -deploy -restart &&
-      sleep 30
+      sleep 120
   - unless: "[ -d {{ master.home }}/plugins/{{ plugin.name }} ]"
   - cwd: /root
   - require:
