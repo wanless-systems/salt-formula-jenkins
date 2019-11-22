@@ -18,16 +18,6 @@ setup_jenkins_cli:
   - require:
     - cmd: jenkins_service_running
 
-{%- if master.configuration_as_code_yaml is defined %}
-install_jenkins_yaml_configuration_as_code:
-    file.managed:
-        - name: {{ master.home }}/jenkins.yaml
-        - user: root
-        - group: root
-        - mode: 644
-        - contents_pillar: jenkins:master:configuration_as_code_yaml
-{%- endif %}
-
 {%- for plugin in master.plugins %}
 
 install_jenkins_plugin_{{ plugin.name }}:
@@ -45,5 +35,24 @@ install_jenkins_plugin_{{ plugin.name }}:
 {%- endif %}
 # TODO: The Jenkins service *must* be restarted after plugins are installed.
 # As we're doing this stuff via the command line this is not automatically done for us.
-
 {%- endfor %}
+
+{%- if master.configuration_as_code_yaml is defined %}
+install_jenkins_yaml_configuration_as_code:
+    file.managed:
+        - name: {{ master.home }}/jenkins.yaml
+        - user: root
+        - group: root
+        - mode: 644
+        - contents_pillar: jenkins:master:configuration_as_code_yaml
+        - require:
+            - install_jenkins_plugin_configuration-as-code
+
+restart_jenkins_after_yaml_configuration:
+    cmd.run:
+        - name: systemctl restart jenkins && touch /var/lib/jenkins/.restarted
+        - unless:
+            - test -f /var/lib/jenkins/.restarted
+        - require:
+            - install_jenkins_yaml_configuration_as_code
+{%- endif %}
